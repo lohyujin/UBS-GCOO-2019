@@ -1,0 +1,208 @@
+<html>
+    <head>
+        <link rel = 'stylesheet' href='digiform.css' type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <script>
+                if(sessionStorage.getItem('token') == null){
+                window.location.href = 'index.html';
+            }    
+        </script>
+        <div class="navbar">
+            <div class="dropdown">
+                <button class="dropbtn">GGCOO 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="main.html">Home</a>
+                <a href="status.html">Instruction Status</a>
+                <a href="index.html">Logout</a>
+                </div>
+            </div> 
+        </div>
+        <div class = 'layout'>
+            <form enctype="multipart/form-data" id='instruction' name='instruction'>
+                <h1>Payment Instruction</h1>
+                <hr>
+                <h2>Account</h2>
+                <div class='acc_details'>
+                    <div class='acc_name'>
+                        <input type='text' id='acc_name' name='acc_name' class ='form__field' placeholder="Account Name">
+                        <label for="acc_name" class="form__label">Account Name</label>
+                    </div>
+                    <div class = 'acc_number'>
+                        <input type='text' id ='acc_number' name = 'acc_number' class='form__field' placeholder="Account Number">
+                        <label for="acc_number" class="form__label">Account Number</label>
+                    </div>
+                </div>
+                <div class = 'payment_details'>
+                    <div class = 'currency'>
+                        <label>Currency</label>
+                        <select type='dropdown' id = 'currency' name='currency' class = 'form__field'>
+                            <option value = ''></option>
+                            <option value='CAD'>CAD</option>
+                            <option value='MYR'>MYR</option>
+                            <option value='USD'>USD</option>
+                        </select>
+                    </div>
+                    <div class = 'amount'>
+                        <input type='text' id='amount' name='amount' class = 'form__field' placeholder='Amount'>
+                        <label for="amount" class="form__label">Amount</label>
+                    </div>
+                    <div class='value_date'>
+                        <input type='text' id ='value_date' name = 'value_date' class = 'form__field' placeholder = 'Value Date'>
+                        <label for="amount" class="form__label">Value Date</label>
+                    </div>
+                    <div id = 'reason_container'>
+                            <div class = 'reason'>
+                                <input type='text' id ='reason' name = 'reason' class = 'form__field' placeholder = 'Reason'>
+                                <label for="reason" class="form__label">Reason</label>
+                            </div>       
+                    </div>
+                </div>
+                <hr>
+                <h2>Beneficiary</h2>
+                <div class = 'beneficiary'>
+                    <div class = 'ben_acc_no'>
+                        <input type='text' id='ben_acc_no' name='ben_acc_no' class = "form__field" placeholder = "Beneficiary Account Number">
+                        <label for='ben_acc_no' class = "form__label">Beneficiary Account Number</label>
+                    </div>
+                    <div class = 'ben_name'>
+                        <input type='text' id='ben_name' name='ben_name' class = 'form__field' placeholder = 'Beneficiary Name'>
+                        <label for="ben_name" class="form__label">Beneficiary Name</label>
+                    </div>
+                    <div id='address_container'>
+                    </div>
+                </div>
+                <hr>
+                <h2>Beneficiary's Bank</h2>
+                <div class = 'beneficiary_bank'>
+                    <div class = 'bic'>
+                        <input type='text' id='bic' name='bic' class = "form__field" placeholder = "BIC">
+                        <label for = 'bic' class = 'form__label'>BIC</label>
+                    </div>
+                    <div class = 'ben_bank_name'>
+                        <input type='text' id='ben_bank_name' name='ben_bank_name' class = "form__field" placeholder ="Beneficiary Bank Name">
+                        <label for = 'ben_bank_name' class='form__label'>Beneficiary Bank Name</label>
+                    </div>
+                </div>
+                <hr>
+                <h2>Attachments</h2>
+                <div class = 'attachments'>
+                    <div class = 'attachment1'>
+                        <h4>Compulsory Attachment</h4>
+                        <input type='file' id='compulsory_att' name='compulsory_att' placeholder ="Identification">
+                    </div>
+                    <div>
+                        <h4>Optional Attachment</h4>
+                        <input type='file' id='optional_att' name='optional_att'>
+                    </div>
+                </div>
+                
+                <hr> 
+                </form>
+                <div class='submitcontainer'>
+                    <p>
+                        <div id = 'message'></div>
+                        <button class='submit' id='submit'>Submit</button>
+                    </p>
+                </div>
+            </div>
+    </body>
+    <script>
+        function logout(){
+            sessionStorage.clear();
+        }
+        document.getElementById('currency').addEventListener('change', function(){
+            var country_code = document.getElementById('bic').value.substring(4,6)
+            var currency = document.getElementById('currency').value;
+            if(currency == 'CAD' && country_code == 'CA'){
+                document.getElementById('address_container').innerHTML += "<div class='ben_address'>" +
+                    "<input type='text' id='ben_address' class = 'form__field' placeholder ='Beneficiary Address'>" +
+                    "<label for = 'ben_address' class='form__label'>Beneficiary Address</label>";
+            }
+            else{
+                document.getElementById('address_container').innerHTML = '';
+            }
+        })
+        document.getElementById('bic').addEventListener('change', function(){
+            var currency = document.getElementById('currency').value;
+            var country_code = document.getElementById('bic').value.substring(4,6)
+            console.log(country_code)
+            document.getElementById('address_container').innerHTML = '';                       
+            if(currency == 'CAD' && country_code == 'CA'){
+                document.getElementById('address_container').innerHTML += "<div class='ben_address'>" +
+                    "<input type='text' id='ben_address' class = 'form__field' placeholder ='Beneficiary Address'>" +
+                    "<label for = 'ben_address' class='form__label'>Beneficiary Address</label>";
+            }
+            else if(country_code == 'AE'){
+                document.getElementById('reason_container').innerHTML = '';
+                document.getElementById('reason_container').innerHTML += "<div class = 'reason'><label>Reason (UAE)</label>" +
+                        "<select type='dropdown' id = 'reason' name = 'reason' class = 'form__field'>";
+                $.ajax({
+                    type : 'GET', 
+                    url: "http://18.138.188.218/reason",
+                    success: function(response){
+                        // console.log(response);
+                        response.forEach(function(responses){
+                            document.getElementById('reason').innerHTML += "<option value = '" + responses[0] + "'>" + responses[0] + ": " +
+                                responses[1] + "</option>";
+                        })
+                        document.getElementById('reason_container').innerHTML += '</select></div>'
+                    },
+                    error: function(error){
+                        console.log(error)
+                    }
+                })
+            }
+           else{
+                document.getElementById('reason_container').innerHTML = '';
+                document.getElementById('reason_container').innerHTML = "<div class = 'reason'>"+
+                                "<input type='text' id ='reason' name = 'reason' class = 'form__field' placeholder = 'Reason'>"+
+                                "<label for='reason' class='form__label'>Reason</label></div>"  
+            }
+        })
+        document.getElementById('submit').addEventListener('click', function(){
+            document.getElementById('message').innerHTML = ""
+            var form = document.getElementById('instruction');
+            var file1 = document.getElementById('compulsory_att').files[0]
+            var file2 = document.getElementById('optional_att').files[0]
+            var formdata = new FormData(form);
+            formdata.append('file1', file1);
+            if(typeof file2 != 'undefined'){
+                formdata.append('file2', file2);
+            }
+            
+            // var input = {}
+            for (var [key, value] of formdata.entries()) { 
+                    console.log(key, value)
+                }
+            $.ajax({
+                    type : 'POST', 
+                    url: "http://18.138.188.218/check",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data : formdata,
+                    success: function(response){
+                        // console.log(response);
+                        if(response[0] == 'True'){
+                            alert("Your payment has been submitted successfully. This is your instruction id " + response[1])
+                            location.reload()
+                        }
+                        else{
+                            document.getElementById('message').innerHTML += 'Please check before submitting.'
+                        }
+                    },
+                    error: function(error){
+                        console.log(error)
+                        alert("Can't connect to server")
+                    }
+                })
+
+        })
+    </script>
+</html>

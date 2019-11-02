@@ -1,0 +1,103 @@
+<html>
+<head>
+    <link rel = 'stylesheet' href='mainpage.css' type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style = "background-image: url(smile.png);">
+    <div class = 'logincontainer'>
+        <div class = 'login'>
+            <form class = 'form'>
+                <h1>Login</h1>
+
+                <div class = 'inputcontainer'>
+                    <input type = 'text' id = 'text' placeholder="Username" class = 'form__field'>
+                    <label for="text" class="form__label">Username</label>
+                </div>
+
+                <div class = 'inputcontainer'>
+                    <input type = 'password' id ='password' placeholder="Password" class = 'form__field'>
+                    <label for="password" class="form__label">Password</label>
+                </div>
+                <div id = '2FAcontainer' class = 'facontainer'></div>
+                <div id ='fasubmit'></div>
+                <div id = 'logincontainer' class = 'submitcontainer'>
+                    <button type = 'button' id = 'login' name = 'submit' class = 'submit' data-hover = 'Welcome!'><div>Login</div></button>    
+                </div>
+                <div id = 'createcontainer' class = 'createcontainer'>
+                    <button type = 'button' name = 'create' class = 'submit' data-hover="Hope Onboard!"><div>Create An Account</div></button>
+                </div>
+                <div>
+                <div id = 'warning' class = 'warning'>
+                    <p>Warning: Be cautious of phishing attacks. We will never ask you to reveal any sensitive information
+                        through phone calls.
+                    </p>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        var count = 0;
+        document.getElementById('login').addEventListener('click', function(){
+        $.ajax({
+                type : 'POST', 
+                url: "http://18.138.188.218/login",
+                contentType: 'application/json',
+                data : JSON.stringify({'data': [$('#text').val(), $('#password').val()]}),
+                success: function(response){
+                    // console.log(response)
+                    if(response[0] == 'True'){
+                        document.getElementById('2FAcontainer').innerHTML = "<h3>Enter 2FA Code</h3>" +
+                        "<div id = '2FAmessage' class = 'FAmessage'></div>" + 
+                        "<input type = 'password' id ='2FA' placeholder='2FA' class = 'form__field' style = 'padding: 0 0 10px 0'>";
+                        document.getElementById('fasubmit').innerHTML = "<button type = 'button' id = '2FAsubmit' name = 'submit' class = 'submit' data-hover = 'Authenticate!'><div>Submit</div></button>";
+                        document.getElementById('logincontainer').innerHTML = '';
+                        document.getElementById('createcontainer').innerHTML = '';
+                        document.getElementById('warning').innerHTML = '';
+                        document.getElementById('2FAsubmit').addEventListener('click', function(){
+                            document.getElementById('2FAmessage').innerHTML = '';
+                                count += 1;
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "http://18.138.188.218/2FA",
+                                    contentType: 'application/json',
+                                    data : JSON.stringify({'data': $('#2FA').val()}),
+                                    success: function(response){
+                                        if(response == 'True'){
+                                            if(sessionStorage){
+                                                        sessionStorage.setItem('username', $('#text').val())
+                                                        sessionStorage.setItem('token', response[1])
+                                                    }
+                                            window.location.href = 'main.html';
+                                        }
+                                        else{
+                                            document.getElementById('2FAmessage').innerHTML += "Retry Again";
+                                        }
+                                    },
+                                    error: function(error){
+                                        console.log(error)
+                                        alert("Can't connect to server.")
+                                    }
+                                })
+                                if(count > 3){
+                                        location.reload();
+                                        alert("Too many tries. Please login again.")
+                                    }   
+                            })
+                    }
+                    else{
+                            document.getElementById('warning').innerHTML = "<p>Invalid Username or Password.<br>Please Try Again </p>";
+                    }
+                },
+                error: function(error){
+                    console.log(error)
+                    alert("Can't connect to server.")
+                }
+            })
+        })
+        
+    </script>
+</body>
+    
+</html>

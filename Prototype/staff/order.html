@@ -1,0 +1,206 @@
+<html>
+    <head>
+        <link rel = 'stylesheet' href='digiform.css' type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <script>
+                if(sessionStorage.getItem('token') == null){
+                window.location.href = 'index.html';
+            }    
+        </script>
+        <div class="navbar">
+            <div class="dropdown">
+                <button class="dropbtn">CA1 
+                <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="index.html">Logout</a>
+                </div>
+            </div> 
+        </div>
+        <div class = 'layout'>
+            <form id = 'order'>
+                <h1>Payment Order</h1>
+                
+                <hr>
+                <h2>Process</h2>
+                <div class = 'process'>
+                    <div class = 'pmethod'>
+                        <input type='text' id='pmethod' name = 'pmethod' class ='form__field' placeholder="Payment Method">
+                        <label for="pmethod" class="form__label">Payment Method</label>
+                    </div>
+                    <div class = 'ticket_id'>
+                        <input type='text' id='ticket_id' name = 'ticket_id' class ='form__field' placeholder="Ticket ID">
+                        <label for="ticket_id" class="form__label">Ticket ID</label>
+                    </div>
+                    <div>
+                        <div class = 'callback'>
+                            <label>Callback</label>
+                            <select type='dropdown' id = 'callback' name='callback' class = 'form__field'>
+                                <option value = ''></option>
+                                <option value='Yes'>Yes</option>
+                                <option value='No'>No</option>
+                            </select>
+                        </div>
+                        <div class = 'orderof'>
+                            <input type='text' id='orderof' name = 'orderof' class = 'form__field' placeholder='Order of'>
+                            <label for="orderof" class="form__label">Order of</label>
+                        </div>
+                        <div class='issued_with'>
+                            <input type='text' id ='issued_with' name = 'issued_with' class = 'form__field' placeholder = 'Order Issued With'>
+                            <label for="issued_with" class="form__label">Order Issued With</label>
+                        </div>
+                        <div class='acc_name'>
+                            <input type='text' id='acc_name' name='acc_name' class ='form__field' placeholder="Instructee">
+                            <label for="acc_name" class="form__label">Person Instructing</label>
+                        </div>
+                        <div id = 'callback_info'>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <h2>Account</h2>
+                <div class='acc_details'>
+                    <div class = 'acc_number'>
+                        <input type='text' id ='acc_number' name = 'acc_number' class='form__field' placeholder="Account Number">
+                        <label for="acc_number" class="form__label">Account Number</label>
+                    </div>
+                </div>
+                <hr>
+                <h2>Payment Details</h2>
+                <div class = 'payment_details'>
+                    <div class = 'currency'>
+                        <label>Currency</label>
+                        <select type='dropdown' id = 'currency' name = 'currency' class = 'form__field'>
+                            <option value = ''></option>
+                            <option value='CAD'>CAD</option>
+                            <option value='MYR'>MYR</option>
+                            <option value='USD'>USD</option>
+                        </select>
+                    </div>
+                    <div class = 'amount'>
+                        <input type='text' id='amount' name = 'amount' class = 'form__field' placeholder='Amount'>
+                        <label for="amount" class="form__label">Amount</label>
+                    </div>
+                    <div class='value_date'>
+                        <input type='text' id ='value_date' name = 'value_date' class = 'form__field' placeholder = 'Value Date'>
+                        <label for="amount" class="form__label">Value Date</label>
+                    </div>
+                    <div class = 'payment_purpose'>
+                        <input type='text' id='reason' name = 'reason' class = "form__field" placeholder ="Payment Purpose">
+                        <label for = 'reason' class='form__label'>Payment Purpose</label>
+                    </div>
+                </div>
+                <hr>
+                <h2>Beneficiary</h2>
+                <div class = 'beneficiary'>
+                    <div class = 'ben_acc_no'>
+                        <input type='text' id='ben_acc_no' name = 'ben_acc_no' class = "form__field" placeholder = "Beneficiary Account Number">
+                        <label for='ben_acc_no' class = "form__label">Beneficiary Account Number</label>
+                    </div>
+                    <div class = 'ben_name'>
+                        <input type='text' id='ben_name' name = 'ben_name' class = 'form__field' placeholder = 'Beneficiary Name'>
+                        <label for="ben_name" class="form__label">Beneficiary Name</label>
+                    </div>
+                    <div class = 'ben_add'>
+                        <input type='text' id='ben_add' name = 'ben_add' class = "form__field" placeholder ="Beneficiary Address">
+                        <label for = 'ben_bank_add' class='form__label'>Beneficiary Address</label>
+                    </div>
+                </div>
+                <hr>
+                <h2>Beneficiary's Bank</h2>
+                <div class = 'beneficiary_bank'>
+                    <div class = 'bic'>
+                        <input type='text' id='bic' name = 'bic' class = "form__field" placeholder = "BIC">
+                        <label for = 'bic' class = 'form__label'>BIC</label>
+                    </div>
+                    <div class = 'ben_bank_name'>
+                        <input type='text' id='ben_bank_name' name = 'ben_bank_name' class = "form__field" placeholder ="Beneficiary Bank Name">
+                        <label for = 'ben_bank_name' class='form__label'>Beneficiary Bank Name</label>
+                    </div>
+                    <div class = 'ben_bank_add'>
+                        <input type='text' id='ben_bank_add' name = 'ben_bank_add' class = "form__field" placeholder ="Beneficiary Bank Address">
+                        <label for = 'ben_bank_add' class='form__label'>Beneficiary Bank Address</label>
+                    </div>
+                </div>
+                <hr> 
+                </form>
+                <div class='submitcontainer'>
+                    <p>
+                        <div id = 'message'></div>
+                        <button class='submit' id='submit'>Submit</button>
+                    </p>
+                </div>
+            </div>
+    </body>
+    <script>
+        function logout(){
+            sessionStorage.clear();
+        }
+        document.getElementById('callback').addEventListener('change', function(){
+            var response = document.getElementById('callback').value;
+            if(response == "Yes"){
+                var callback_person = "<div class = 'callback_person'><input type='text' id ='callback_person' class = 'form__field' placeholder = 'Callback Person'>"+
+                            "<label for='callback_person' class='form__label'>Callback Person</label>";
+                var callback_name = "<div class = 'callback_name'><input type='text' id ='callback_name' class = 'form__field' placeholder = 'Callback Name'>"+
+                            "<label for='callback_name' class='form__label'>Callback Name</label>";
+                document.getElementById('callback_info').innerHTML += callback_person + callback_name;
+            }
+            else{
+                document.getElementById('callback_info').innerHTML = '';
+            }
+        })
+        document.getElementById('ticket_id').addEventListener('change', function(){
+            var id = document.getElementById('ticket_id').value
+            if(id == ''){
+                location.reload()
+            }
+            $.ajax({
+                type : 'POST', 
+                    url: "http://18.138.188.218/id",
+                    contentType: 'application/json',
+                    data : JSON.stringify({'data': id}),
+                    success: function(response){
+                        // console.log(response)
+                        for(var key in response){
+                            // console.log(key)
+                            document.getElementById(key).value = response[key]
+                        }   
+                    },
+                    error: function(error){
+                        console.log(error)
+                        alert("Cant Connect to Server.")
+                    }
+            })
+        })
+        document.getElementById('submit').addEventListener('click', function(){
+            document.getElementById('message').innerHTML = ""
+            var form = document.getElementById('order');
+            var formdata = new FormData(form);
+            $.ajax({
+                    type : 'POST', 
+                    url: "http://18.138.188.218/update",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data : formdata,
+                    success: function(response){
+                        // console.log(response);
+                        if(response == 'True'){
+                            alert("Payment order has been submitted.")
+                            location.reload()
+                        }
+                        
+                    },
+                    error: function(error){
+                        console.log(error)
+                        alert("Cant Connect to Server.")
+                    }
+                })
+
+        })
+    </script>
+</html>

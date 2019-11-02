@@ -1,0 +1,76 @@
+<html>
+<head>
+    <link rel = 'stylesheet' href='digiform.css' type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+    <script>
+         if(sessionStorage.getItem('token') == null){
+        window.location.href = 'index.html';
+    }    
+    </script>
+
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="dropbtn">GGCOO 
+            <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+            <a href="digiform.html">Submit Instruction</a>
+            <a href="main.html">Home</a>
+            <a href= 'index.html' onclick = logout()>Logout</a>
+            </div>
+        </div> 
+    </div>
+    <div id='main' class = 'main_container'>
+        <div class='layout'>
+            <h1>Payment Instruction Status</h1>
+            <div class = 'check'>
+                <h2>Enter your instruction ID to check the status of your instruction</h2>
+                <div class='submitcontainer'>
+                        <p>
+                            <input type='text' id='check' name='check' class = "form__field" placeholder = "Check" style='text-align:center'>
+                        </p>
+                        <p>
+                            <button class='submit' id='submit'>Submit</button>
+                        </p>
+                        <p>
+                            <div id = 'message'>
+                            </div>
+                        </p>
+                    </div>
+            </div>   
+        </div>
+        
+    </div>
+    <script>
+        function logout(){
+            sessionStorage.clear();
+        }
+        document.getElementById('submit').addEventListener('click', function(){
+            var value = document.getElementById('check').value
+            $.ajax({
+                type : 'POST', 
+                    url: "http://18.138.188.218/status",
+                    contentType: 'application/json',
+                    data: JSON.stringify({'data': value}),
+                    success: function(response){
+                        // console.log(response);
+                        if(response == 'closed'){
+                            document.getElementById('message').innerHTML = 'Payment Instruction is processed.'
+                        }
+                        else{
+                            document.getElementById('message').innerHTML = 'Payment Instruction is currently being processed.'
+                        }
+                    },
+                    error: function(error){
+                        console.log(error)
+                    }
+            })
+        })
+    </script>
+
+</body>
+</html>

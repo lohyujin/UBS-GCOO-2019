@@ -1,0 +1,39 @@
+<html>
+<head>
+    <link rel = 'stylesheet' href='digiform.css' type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+    <script>
+         if(sessionStorage.getItem('token') == null){
+        window.location.href = 'index.html';
+    }    
+    </script>
+
+    <div class="navbar">
+        <div class="dropdown">
+            <button class="dropbtn">GGCOO 
+            <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+            <a href="digiform.html">Submit Instruction</a>
+            <a href="status.html">Instruction Status</a>
+            <a href= 'index.html' onclick = logout()>Logout</a>
+            </div>
+        </div> 
+    </div>
+    <div id='main' class = 'main_container'>
+        <img src = main.jpg class='main'>
+        <div class='main-text'>Save today for your own cafe!</div>
+    </div>
+    <div>
+    </div>
+    <script>
+        function logout(){
+            sessionStorage.clear();
+        }
+    </script>
+
+</body>
+</html>
